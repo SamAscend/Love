@@ -290,6 +290,24 @@
             width: 0%;
             transition: width 0.1s linear;
         }
+/* Custom scrollbar yang cantik */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(220, 38, 38, 0.1);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(220, 38, 38, 0.5);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(220, 38, 38, 0.7);
+}
     </style>
 </head>
 <body class="bg-white text-gray-900 transition-colors duration-500">
@@ -461,12 +479,14 @@
             <div class="absolute bottom-0 left-0 w-24 h-24 bg-red-100 dark:bg-red-900 rounded-full -mb-12 -ml-12 opacity-50"></div>
             
             <div class="relative z-10">
-                <div class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed space-y-6">
+                <!-- Container yang bisa di-scroll -->
+                <div class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed space-y-6 max-h-96 overflow-y-auto pr-4 custom-scrollbar">
                     <p class="typing-animation">My Dearest Darling...Irene,</p>
-                    <p class="typing-animation" style="animation-delay: 1s;">There are no words beautiful enough to describe my feelings for you. Every day with you is a precious gift that I cherish deeply.</p>
-                    <p class="typing-animation" style="animation-delay: 2s;">You are the reason behind my smile, the source of my strength, and the light in my day. Thank you for being you.</p>
-                    <p class="typing-animation" style="animation-delay: 3s;">With all my love,</p>
-                    <p class="typing-animation cursive text-red-600 text-2xl mt-8" style="animation-delay: 4s;">[Samuel]</p>
+                    <p class="typing-animation" style="animation-delay: 1s;">There are no words beautiful enough to describe my feelings for you. Every day with you is a precious gift that fills my heart with joy and gratitude. I wake up each morning thankful for another day to love you.</p>
+                    <p class="typing-animation" style="animation-delay: 2s;">You are the reason behind my smile, the source of my strength, and the light in my day. Your love has transformed my world in ways I never thought possible. When I'm with you, everything feels right.</p>
+                    <p class="typing-animation" style="animation-delay: 3s;">I promise to always cherish you, to stand by your side through everything, and to love you more with each passing day. You are my everything.</p>
+                    <p class="typing-animation" style="animation-delay: 4s;">With all my love, now and forever,</p>
+                    <p class="typing-animation cursive text-red-600 text-2xl mt-8" style="animation-delay: 5s;">[Samuel]</p>
                 </div>
             </div>
         </div>
