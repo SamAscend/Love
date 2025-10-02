@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untukmu, Cintaku - Surga Kecilku</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <style>
+        :root {
+            --primary-red: #dc2626;
+            --primary-black: #000000;
+            --primary-white: #ffffff;
+            --gray-dark: #1f2937;
+            --gray-light: #f3f4f6;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .heart {
+            background: var(--primary-red);
+            display: inline-block;
+            height: 30px;
+            margin: 0 10px;
+            position: relative;
+            top: 0;
+            transform: rotate(-45deg);
+            width: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .heart:hover {
+            transform: rotate(-45deg) scale(1.2);
+        }
+        
+        .heart:before,
+        .heart:after {
+            content: "";
+            background: var(--primary-red);
+            border-radius: 50%;
+            height: 30px;
+            position: absolute;
+            width: 30px;
+        }
+        
+        .heart:before {
+            top: -15px;
+            left: 0;
+        }
+        
+        .heart:after {
+            left: 15px;
+            top: 0;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(220, 38, 38, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(220, 38, 38, 0.5); }
+        }
+        
+        .glowing {
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end);
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fade-in-up 1s ease-out;
+        }
+        
+        .memory-card {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card-front, .memory-card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+        
+        .memory-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, var(--primary-red), #9d1239);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .secret-message {
+            background: linear-gradient(45deg, #dc2626, #9d1239, #7f1d1d);
+            background-size: 300% 300%;
+            animation: gradientShift 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        .starry-night {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+        
+        .dark-mode {
+            background: #000000;
+            color: #e2e8f0;
+        }
+        
+        .dark-mode .bg-white {
+            background: #1f2937;
+        }
+        
+        .dark-mode .text-gray-700 {
+            color: #cbd5e1;
+        }
+        
+        .dark-mode .bg-gray-100 {
+            background: #111827;
+        }
+        
+        .dark-mode .bg-gradient-to-br {
+            background: linear-gradient(to bottom right, #1f2937, #374151);
+        }
+        
+        .photo-frame {
+            border: 5px solid #dc2626;
+            padding: 10px;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .photo-frame:hover {
+            transform: rotate(2deg) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .love-note {
+            background: white;
+            border-left: 5px solid #dc2626;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .love-note:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dark-mode .love-note {
+            background: #1f2937;
+            border-left: 5px solid #dc2626;
+            color: #e2e8f0;
+        }
+        
+        .dark-mode .photo-frame {
+            border: 5px solid #dc2626;
+            background: #1f2937;
+        }
+        
+        .music-player {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: #4a5568;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #dc2626;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 transition-colors duration-500">
+    <!-- Background dengan partikel dan bintang -->
+    <canvas id="particleCanvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+    <div id="starryNight" class="starry-night"></div>
+    
+    <!-- Toggle tema -->
+    <div id="themeToggle" class="theme-toggle">
+        <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+        <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+    </div>
+
+    <!-- Three.js 3D Scene -->
+    <div id="threeContainer" class="fixed top-0 left-0 w-full h-full -z-10 opacity-70"></div>
+
+    <!-- Header dengan animasi -->
+    <header class="relative h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden bg-black text-white">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black opacity-80"></div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold cursive text-white mb-6 floating">Untukmu, <span class="text-red-600">Sayangku</span></h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Setiap detik bersamamu adalah halaman baru dalam buku kehidupan yang ingin kubaca berulang kali.
+            </p>
+            <div class="flex justify-center space-x-4 mb-12">
+                <div class="heart floating" style="animation-delay: 0s;"></div>
+                <div class="heart floating" style="animation-delay: 1s;"></div>
+                <div class="heart floating" style="animation-delay: 2s;"></div>
+            </div>
+            <button id="exploreBtn" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 glowing">
+                Jelajahi Cinta Kita
+            </button>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <div class="animate-bounce text-red-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- Timeline Kisah Kita -->
+    <section id="timeline" class="py-20 px-4 bg-white dark:bg-gray-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center cursive text-red-600 mb-16">Perjalanan Kita</h2>
+            
+            <div class="relative">
+                <!-- Garis timeline -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-red-400 to-red-600"></div>
+                
+                <!-- Item timeline -->
+                <div class="mb-12 flex justify-between items-center w-full right-timeline">
+                    <div class="order-1 w-5/12"></div>
+                    <div class="z-20 flex items-center order-1 bg-red-600 shadow-xl w-8 h-8 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">1</h1>
+                    </div>
+                    <div class="order-1 bg-gradient-to-r from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg shadow-xl w-5/12 px-6 py-4 border border-gray-200 dark:border-gray-700">
+                        <h3 class="mb-3 font-bold text-red-600 text-xl">Pertemuan Pertama</h3>
+                        <p class="text-sm leading-snug tracking-wide text-gray-700 dark:text-gray-300">Saat pertama kali mata kita bertemu, aku tahu ada sesuatu yang special tentangmu.</p>
+                        <div class="text-right mt-2">
+                            <span class="text-xs text-red-500">12 Maret 2022</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-12 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                    <div class="order-1 w-5/12"></div>
+                    <div class="z-20 flex items-center order-1 bg-red-600 shadow-xl w-8 h-8 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">2</h1>
+                    </div>
+                    <div class="order-1 bg-gradient-to-l from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg shadow-xl w-5/12 px-6 py-4 border border-gray-200 dark:border-gray-700">
+                        <h3 class="mb-3 font-bold text-red-600 text-xl">Kencan Pertama</h3>
+                        <p class="text-sm leading-snug tracking-wide text-gray-700 dark:text-gray-300">Hari itu kafe itu terasa begitu special karena kehadiranmu.</p>
+                        <div class="text-right mt-2">
+                            <span class="text-xs text-red-500">28 Maret 2022</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-12 flex justify-between items-center w-full right-timeline">
+                    <div class="order-1 w-5/12"></div>
+                    <div class="z-20 flex items-center order-1 bg-red-600 shadow-xl w-8 h-8 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">3</h1>
+                    </div>
+                    <div class="order-1 bg-gradient-to-r from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-lg shadow-xl w-5/12 px-6 py-4 border border-gray-200 dark:border-gray-700">
+                        <h3 class="mb-3 font-bold text-red-600 text-xl">Ucapan Cinta Pertama</h3>
+                        <p class="text-sm leading-snug tracking-wide text-gray-700 dark:text-gray-300">Hari ketika kita saling mengungkapkan perasaan, dunia seakan berhenti berputar.</p>
+                        <div class="text-right mt-2">
+                            <span class="text-xs text-red-500">15 April 2022</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeri Foto Interaktif -->
+    <section id="gallery" class="py-20 px-4 bg-gray-100 dark:bg-gray-800">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center cursive text-red-600 mb-16">Kenangan Indah</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Foto 1 -->
+                <div class="photo-frame">
+                    <div class="relative group overflow-hidden rounded-lg">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <p class="text-white">Momen pertama kita berdua</p>
+                        </div>
+                        <div class="w-full h-64 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                            <span class="text-gray-600">Foto Kenangan 1</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Foto 2 -->
+                <div class="photo-frame">
+                    <div class="relative group overflow-hidden rounded-lg">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <p class="text-white">Petualangan kita bersama</p>
+                        </div>
+                        <div class="w-full h-64 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                            <span class="text-gray-600">Foto Kenangan 2</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Foto 3 -->
+                <div class="photo-frame">
+                    <div class="relative group overflow-hidden rounded-lg">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <p class="text-white">Senyummu yang selalu membuat hariku cerah</p>
+                        </div>
+                        <div class="w-full h-64 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                            <span class="text-gray-600">Foto Kenangan 3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mini Game Memory -->
+    <section id="memoryGame" class="py-20 px-4 bg-white dark:bg-gray-900">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-center cursive text-red-600 mb-4">Game Memory Cinta Kita</h2>
+            <p class="text-center text-gray-600 dark:text-gray-400 mb-10">Temukan pasangan yang cocok untuk mengungkap pesan rahasia!</p>
+            
+            <div class="grid grid-cols-4 gap-4 mb-8" id="memoryGameContainer">
+                <!-- Kartu memory akan di-generate oleh JavaScript -->
+            </div>
+            
+            <div class="text-center">
+                <p id="gameMessage" class="text-lg mb-4 text-red-600"></p>
+                <button id="resetGame" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full font-semibold transition-colors">
+                    Main Lagi
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Surat Cinta Interaktif -->
+    <section id="loveLetter" class="py-20 px-4 bg-gray-100 dark:bg-gray-800">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-center cursive text-red-600 mb-16">Surat Untukmu</h2>
+            
+            <div class="love-note rounded-2xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-red-100 dark:bg-red-900 rounded-full -mt-16 -mr-16 opacity-50"></div>
+                <div class="absolute bottom-0 left-0 w-24 h-24 bg-red-100 dark:bg-red-900 rounded-full -mb-12 -ml-12 opacity-50"></div>
+                
+                <div class="relative z-10">
+                    <div class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed space-y-4">
+                        <p class="typing-animation">Sayangku tersayang,</p>
+                        <p class="typing-animation" style="animation-delay: 1s;">Tidak ada kata yang cukup indah untuk menggambarkan perasaanku padamu. Setiap hari bersamamu adalah anugerah yang tak ternilai.</p>
+                        <p class="typing-animation" style="animation-delay: 2s;">Kau adalah alasan di balik senyumku, sumber kekuatanku, dan cahaya dalam hariku. Terima kasih telah menjadi bagian terindah dalam hidupku.</p>
+                        <p class="typing-animation" style="animation-delay: 3s;">Dengan segala cinta,</p>
+                        <p class="typing-animation cursive text-red-600 text-xl mt-6" style="animation-delay: 4s;">[Nama Anda]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pesan Rahasia -->
+    <section id="secretMessage" class="py-20 px-4 bg-black text-white text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6">Pesan Rahasia Untukmu</h2>
+            <p class="mb-8">Klik hati di bawah untuk membuka pesan rahasia!</p>
+            
+            <div class="flex justify-center mb-8">
+                <div id="secretHeart" class="heart glowing cursor-pointer transform scale-150"></div>
+            </div>
+            
+            <div id="secretText" class="text-2xl cursive secret-message hidden">
+                Aku akan selalu mencintaimu, sekarang dan selamanya.
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Special -->
+    <section id="countdown" class="py-20 px-4 bg-white dark:bg-gray-900">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold cursive text-red-600 mb-6">Menuju Anniversary Kita</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-10">Hitungan mundur menuju hari spesial kita!</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                <div class="bg-black text-white rounded-xl p-6 shadow-lg border border-red-600">
+                    <div id="days" class="text-4xl font-bold">00</div>
+                    <div class="text-sm">Hari</div>
+                </div>
+                <div class="bg-black text-white rounded-xl p-6 shadow-lg border border-red-600">
+                    <div id="hours" class="text-4xl font-bold">00</div>
+                    <div class="text-sm">Jam</div>
+                </div>
+                <div class="bg-black text-white rounded-xl p-6 shadow-lg border border-red-600">
+                    <div id="minutes" class="text-4xl font-bold">00</div>
+                    <div class="text-sm">Menit</div>
+                </div>
+                <div class="bg-black text-white rounded-xl p-6 shadow-lg border border-red-600">
+                    <div id="seconds" class="text-4xl font-bold">00</div>
+                    <div class="text-sm">Detik</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Musik & Audio -->
+    <section class="py-12 bg-red-600 text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold mb-4">Lagu Kita</h3>
+            <p class="mb-6">Putar lagu special kita sambil menjelajahi website ini</p>
+            
+            <div class="music-player">
+                <div class="text-xl mb-2" id="nowPlaying">Tidak ada lagu yang diputar</div>
+                
+                <div class="flex justify-center space-x-4 mb-4">
+                    <button data-song="1" class="song-btn bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-semibold transition-colors">
+                        Lagu Cinta Kita
+                    </button>
+                    <button data-song="2" class="song-btn bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded font-semibold transition-colors">
+                        Lagu Kenangan
+                    </button>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="songProgress"></div>
+                </div>
+                
+                <div class="flex justify-center space-x-4 mt-4">
+                    <button id="prevBtn" class="p-2 rounded-full bg-gray-700 hover:bg-gray-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button id="playPauseBtn" class="p-2 rounded-full bg-red-600 hover:bg-red-700">
+                        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                    <button id="nextBtn" class="p-2 rounded-full bg-gray-700 hover:bg-gray-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 bg-black text-white text-center">
+        <div class="max-w-6xl mx-auto px-4">
+            <p class="text-lg cursive">Selamanya dan seterusnya, aku akan mencintaimu</p>
+            <p class="mt-2 text-gray-400">Dibuat dengan <span class="text-red-500">❤</span> khusus untukmu</p>
+            <button id="confettiBtn" class="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full transition-colors">
+                Sebarkan Cinta! 🎉
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        // ========== INISIALISASI ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            initParticles();
+            createStars();
+            initMemoryGame();
+            initCountdown();
+            initMusicPlayer();
+            initEventListeners();
+            if (window.innerWidth > 768) {
+                initThreeJS();
+            }
+        });
+
+        // ========== PARTICLE BACKGROUND ==========
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        let particles = [];
+        const particleCount = 80;
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = `rgba(${Math.floor(Math.random() * 100 + 150)}, ${Math.floor(Math.random() * 50)}, ${Math.floor(Math.random() * 50)}, ${Math.random() * 0.5 + 0.2})`;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas.width;
+                
+                if (this.y > canvas.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+            
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                requestAnimationFrame(animateParticles);
+            }
+            
+            animateParticles();
+        }
+        
+        // ========== STAR BACKGROUND ==========
+        function createStars() {
+            const starryNight = document.getElementById('starryNight');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Random size
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random animation delay
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starryNight.appendChild(star);
+            }
+        }
+        
+        // ========== THREE.JS 3D SCENE ==========
+        function initThreeJS() {
+            const container = document.getElementById('threeContainer');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+            
+            // Create hearts
+            const heartGeometry = new THREE.SphereGeometry(0.5, 8, 6);
+            const heartMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xdc2626,
+                transparent: true,
+                opacity: 0.7
+            });
+            
+            const hearts = [];
+            const heartCount = 8;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = new THREE.Mesh(heartGeometry, heartMaterial);
+                
+                // Random position
+                heart.position.x = (Math.random() - 0.5) * 10;
+                heart.position.y = (Math.random() - 0.5) * 10;
+                heart.position.z = (Math.random() - 0.5) * 10;
+                
+                // Random scale
+                const scale = Math.random() * 0.5 + 0.5;
+                heart.scale.set(scale, scale, scale);
+                
+                scene.add(heart);
+                hearts.push({
+                    mesh: heart,
+                    speed: Math.random() * 0.02 + 0.01
+                });
+            }
+            
+            camera.position.z = 5;
+            
+            // Animation
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                hearts.forEach(heart => {
+                    heart.mesh.rotation.x += heart.speed;
+                    heart.mesh.rotation.y += heart.speed;
+                    
+                    // Floating animation
+                    heart.mesh.position.y += Math.sin(Date.now() * 0.001 + heart.mesh.position.x) * 0.005;
+                });
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        // ========== MEMORY GAME ==========
+        function initMemoryGame() {
+            const gameContainer = document.getElementById('memoryGameContainer');
+            const gameMessage = document.getElementById('gameMessage');
+            const resetButton = document.getElementById('resetGame');
+            
+            const cardValues = ['❤', '💕', '💖', '💘', '💝', '🎀', '🌸', '⭐'];
+            let cards = [...cardValues, ...cardValues];
+            let flippedCards = [];
+            let matchedPairs = 0;
+            let canFlip = true;
+            
+            // Shuffle cards
+            function shuffleCards() {
+                for (let i = cards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cards[i], cards[j]] = [cards[j], cards[i]];
+                }
+            }
+            
+            // Create card elements
+            function createCards() {
+                gameContainer.innerHTML = '';
+                cards.forEach((value, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('memory-card', 'cursor-pointer', 'relative', 'h-24', 'bg-white', 'dark:bg-gray-800', 'rounded-lg', 'shadow-md');
+                    card.dataset.value = value;
+                    card.dataset.index = index;
+                    
+                    const cardFront = document.createElement('div');
+                    cardFront.classList.add('memory-card-front', 'bg-gradient-to-br', 'from-gray-100', 'to-gray-200', 'dark:from-gray-700', 'dark:to-gray-800', 'flex', 'items-center', 'justify-center', 'text-xl', 'font-bold', 'rounded-lg');
+                    cardFront.innerHTML = '?';
+                    
+                    const cardBack = document.createElement('div');
+                    cardBack.classList.add('memory-card-back', 'rounded-lg');
+                    cardBack.innerHTML = value;
+                    
+                    card.appendChild(cardFront);
+                    card.appendChild(cardBack);
+                    
+                    card.addEventListener('click', flipCard);
+                    gameContainer.appendChild(card);
+                });
+            }
+            
+            // Flip card function
+            function flipCard() {
+                if (!canFlip) return;
+                if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                    this.classList.add('flipped');
+                    flippedCards.push(this);
+                    
+                    if (flippedCards.length === 2) {
+                        canFlip = false;
+                        setTimeout(checkForMatch, 500);
+                    }
+                }
+            }
+            
+            // Check for match
+            function checkForMatch() {
+                const [card1, card2] = flippedCards;
+                const isMatch = card1.dataset.value === card2.dataset.value;
+                
+                if (isMatch) {
+                    card1.removeEventListener('click', flipCard);
+                    card2.removeEventListener('click', flipCard);
+                    matchedPairs++;
+                    
+                    if (matchedPairs === cardValues.length) {
+                        gameMessage.textContent = 'Selamat! Kamu berhasil menemukan semua pasangan! Aku mencintaimu! 💖';
+                        triggerConfetti();
+                    }
+                    
+                    resetFlippedCards();
+                    canFlip = true;
+                } else {
+                    setTimeout(() => {
+                        card1.classList.remove('flipped');
+                        card2.classList.remove('flipped');
+                        resetFlippedCards();
+                        canFlip = true;
+                    }, 1000);
+                }
+            }
+            
+            function resetFlippedCards() {
+                flippedCards = [];
+            }
+            
+            // Reset game
+            function resetGame() {
+                flippedCards = [];
+                matchedPairs = 0;
+                gameMessage.textContent = '';
+                canFlip = true;
+                shuffleCards();
+                createCards();
+            }
+            
+            resetButton.addEventListener('click', resetGame);
+            
+            // Initialize game
+            shuffleCards();
+            createCards();
+        }
+        
+        // ========== COUNTDOWN TIMER ==========
+        function initCountdown() {
+            // Set your anniversary date here (year, month-1, day)
+            const anniversaryDate = new Date(new Date().getFullYear(), 11, 25); // 25 December tahun ini
+            
+            function updateCountdown() {
+                const now = new Date();
+                const diff = anniversaryDate - now;
+                
+                if (diff > 0) {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                } else {
+                    // Jika sudah lewat tanggal anniversary, set untuk tahun depan
+                    anniversaryDate.setFullYear(anniversaryDate.getFullYear() + 1);
+                }
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+        
+        // ========== MUSIC PLAYER ==========
+        function initMusicPlayer() {
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const songBtns = document.querySelectorAll('.song-btn');
+            const progressBar = document.getElementById('songProgress');
+            const nowPlaying = document.getElementById('nowPlaying');
+            
+            const songs = [
+                { title: "Lagu Cinta Kita", src: "#" },
+                { title: "Lagu Kenangan", src: "#" }
+            ];
+            
+            let currentSongIndex = 0;
+            let isPlaying = false;
+            let audio = new Audio();
+            
+            function loadSong(index) {
+                audio.src = songs[index].src;
+                nowPlaying.textContent = `Sedang diputar: ${songs[index].title}`;
+            }
+            
+            function playSong() {
+                isPlaying = true;
+                playPauseBtn.querySelector('#playIcon').classList.add('hidden');
+                playPauseBtn.querySelector('#pauseIcon').classList.remove('hidden');
+                // Di sini akan memutar audio jika file tersedia
+                // audio.play();
+            }
+            
+            function pauseSong() {
+                isPlaying = false;
+                playPauseBtn.querySelector('#playIcon').classList.remove('hidden');
+                playPauseBtn.querySelector('#pauseIcon').classList.add('hidden');
+                // audio.pause();
+            }
+            
+            function prevSong() {
+                currentSongIndex--;
+                if (currentSongIndex < 0) {
+                    currentSongIndex = songs.length - 1;
+                }
+                loadSong(currentSongIndex);
+                if (isPlaying) playSong();
+            }
+            
+            function nextSong() {
+                currentSongIndex++;
+                if (currentSongIndex > songs.length - 1) {
+                    currentSongIndex = 0;
+                }
+                loadSong(currentSongIndex);
+                if (isPlaying) playSong();
+            }
+            
+            // Event listeners
+            playPauseBtn.addEventListener('click', () => {
+                isPlaying ? pauseSong() : playSong();
+            });
+            
+            prevBtn.addEventListener('click', prevSong);
+            nextBtn.addEventListener('click', nextSong);
+            
+            songBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const songIndex = parseInt(this.dataset.song) - 1;
+                    if (songIndex !== currentSongIndex) {
+                        currentSongIndex = songIndex;
+                        loadSong(currentSongIndex);
+                        playSong();
+                    }
+                });
+            });
+            
+            // Simulasi progress bar
+            setInterval(() => {
+                if (isPlaying) {
+                    const currentWidth = parseInt(progressBar.style.width) || 0;
+                    const newWidth = currentWidth < 100 ? currentWidth + 1 : 0;
+                    progressBar.style.width = `${newWidth}%`;
+                }
+            }, 1000);
+            
+            // Load first song
+            loadSong(currentSongIndex);
+        }
+        
+        // ========== EVENT LISTENERS ==========
+        function initEventListeners() {
+            // Theme toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                
+                const moonIcon = document.getElementById('moonIcon');
+                const sunIcon = document.getElementById('sunIcon');
+                
+                if (body.classList.contains('dark-mode')) {
+                    moonIcon.classList.remove('hidden');
+                    sunIcon.classList.add('hidden');
+                } else {
+                    moonIcon.classList.add('hidden');
+                    sunIcon.classList.remove('hidden');
+                }
+            });
+            
+            // Explore button scroll
+            document.getElementById('exploreBtn').addEventListener('click', function() {
+                document.getElementById('timeline').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+            
+            // Secret message
+            document.getElementById('secretHeart').addEventListener('click', function() {
+                const secretText = document.getElementById('secretText');
+                secretText.classList.toggle('hidden');
+                triggerConfetti();
+            });
+            
+            // Confetti button
+            document.getElementById('confettiBtn').addEventListener('click', triggerConfetti);
+            
+            // Scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in-up');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements for animation
+            document.querySelectorAll('#timeline, #gallery, #memoryGame, #loveLetter, #secretMessage, #countdown').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initParticles();
+            });
+        }
+        
+        // ========== CONFETTI EFFECT ==========
+        function triggerConfetti() {
+            const confettiSettings = { target: 'particleCanvas', max: 150, size: 1.5, animate: true };
+            const confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+            
+            setTimeout(() => {
+                confetti.clear();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
