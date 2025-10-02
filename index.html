@@ -290,23 +290,37 @@
             width: 0%;
             transition: width 0.1s linear;
         }
-/* Custom scrollbar yang cantik */
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(220,38,38,0.5) rgba(220,38,38,0.08);
+}
+
+/* Chrome / Edge / Safari */
 .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+  width: 8px;
+  height: 8px;
 }
-
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(220, 38, 38, 0.1);
-    border-radius: 10px;
+  background: rgba(220,38,38,0.08);
+  border-radius: 9999px;
 }
-
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(220, 38, 38, 0.5);
-    border-radius: 10px;
+  background: rgba(220,38,38,0.45);
+  border-radius: 9999px;
+  border: 2px solid transparent; /* membuat thumb agak "mengambang" */
+  background-clip: padding-box;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(220,38,38,0.65);
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(220, 38, 38, 0.7);
+/* Dark mode (jika kamu pakai class="dark" di <html> atau <body>) */
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.03);
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
 }
     </style>
 </head>
@@ -481,7 +495,7 @@
             <div class="relative z-10">
                 <!-- Container yang bisa di-scroll -->
                 <div class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed space-y-6 max-h-96 overflow-y-auto pr-4 custom-scrollbar">
-                    <p class="typing-animation">My Dearest Darling...Irene,</p>
+                    <p class="typing-animation">My Dearest Darling.....Irene,</p>
                     <p class="typing-animation" style="animation-delay: 1s;">There are no words beautiful enough to describe my feelings for you. Every day with you is a precious gift that fills my heart with joy and gratitude. I wake up each morning thankful for another day to love you.</p>
                     <p class="typing-animation" style="animation-delay: 2s;">You are the reason behind my smile, the source of my strength, and the light in my day. Your love has transformed my world in ways I never thought possible. When I'm with you, everything feels right.</p>
                     <p class="typing-animation" style="animation-delay: 3s;">I promise to always cherish you, to stand by your side through everything, and to love you more with each passing day. You are my everything.</p>
